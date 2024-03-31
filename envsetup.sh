@@ -487,6 +487,11 @@ function lunch()
     # Split string on the '-' character.
     IFS="-" read -r product release variant <<< "$selection"
 
+    if [ -z "$variant" ]; then
+        variant=$release
+        release=$(find "${ANDROID_BUILD_TOP}"/build/release/aconfig/* -maxdepth 0 -type d -name "[a-z][a-z][0-9][a-z]" -printf '%f\n' | tail -n1)
+    fi
+
     if [[ -z "$product" ]] || [[ -z "$release" ]] || [[ -z "$variant" ]]
     then
         echo
